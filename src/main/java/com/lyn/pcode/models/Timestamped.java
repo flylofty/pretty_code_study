@@ -1,4 +1,4 @@
-package com.lyn.pcode.model;
+package com.lyn.pcode.models;
 
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
