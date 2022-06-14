@@ -1,5 +1,6 @@
 package com.lyn.pcode.web.dto.restaurant;
 
+import com.lyn.pcode.models.restaurant.Restaurant;
 import com.lyn.pcode.web.dto.restaurant.validation.MoneyUnit;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,4 +29,12 @@ public class SaveRestaurantRequestDto {
            message = "deliveryFee:배달 요금은 0원 이상 만원 이하의 값이여야 합니다.")
     @MoneyUnit(message = "deliveryFee:배달 요금은 500원 단위로만 입력가능합니다.")
     private final Integer deliveryFee;
+
+    public Restaurant toEntity() {
+        return Restaurant.builder()
+                .name(name)
+                .minOrderPrice(minOrderPrice)
+                .deliveryFee(deliveryFee)
+                .build();
+    }
 }

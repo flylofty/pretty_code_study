@@ -1,46 +1,35 @@
 package com.lyn.pcode.web.dto.restaurant;
 
+import com.lyn.pcode.models.restaurant.Restaurant;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.validation.BindingResult;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
 @Getter
+@NoArgsConstructor
 public class SaveRestaurantResponseDto {
 
     private String code;
     private String message;
     private Map<String, String> data;
 
-    public SaveRestaurantResponseDto(BindingResult bindingResult) {
+    public SaveRestaurantResponseDto(Map<String, String> data) {
         this.code = "400";
         this.message = "사용자 입력 오류";
-
-        // DTO 안에 이러한 로직인 있는게 아닌 것 같음
-        makeDetails(bindingResult);
+        this.data = data;
     }
 
-    private void makeDetails(BindingResult bindingResult) {
-        data = new HashMap<>();
-        bindingResult.getAllErrors()
-                .forEach(objectError -> {
-                    String[] errorArray = objectError.getDefaultMessage().split(":");
-                    if (isNeededFieldName(errorArray[0])) {
-                        data.put(errorArray[0], errorArray[1]);
-                    }
-                });
-    }
-
-    private boolean isNeededFieldName(String fieldName) {
-        // DTO 안에 이러한 로직인 있는게 아닌 것 같음
-        return fieldName.equals("name") || fieldName.equals("minOrderPrice") || fieldName.equals("deliveryFee");
-    }
-
-    public SaveRestaurantResponseDto() {
+    public SaveRestaurantResponseDto(Restaurant entity) {
         this.code = "200";
         this.message = "성공";
+        data = new HashMap<>();
+        data.put("id", entity.getId().toString());
+        data.put("name", entity.getName());
+        data.put("minOrderPrice", entity.getMinOrderPrice().toString());
+        data.put("deliveryFee", entity.getDeliveryFee().toString());
     }
 }
