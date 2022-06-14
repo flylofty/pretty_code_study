@@ -6,17 +6,17 @@ import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import static java.lang.annotation.ElementType.*;
-import static java.lang.annotation.RetentionPolicy.*;
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Target({FIELD}) // 해당 어노테이션을 필드에만 선언 가능
 @Retention(RUNTIME) // 해당 어노테이션이 유지되는 시간으로써 런타임까지 유효함
-@Constraint(validatedBy = MinOrderPriceValidator.class) // MinOrderPriceValidator 를 통해 유효성 검사를 진행
+@Constraint(validatedBy = MoneyUnitValidator.class) // DeliveryFeeValidator 를 통해 유효성 검사를 진행
 @Documented // JavaDoc 생성시 Annotation 에 대한 정보도 함께 생성
-public @interface MinOrderPriceUnit {
+public @interface MoneyUnit {
 
     // 유효하지 않을 경우 반환할 메시지
-    String message() default "minOrderPrice:최소 주문 가격은 100원 단위로 작성 가능합니다.";
+    String message() default "올바른 금액 단위를 입력해주세요";
 
     // 유효성 검증이 진행될 그룹
     Class<?>[] groups() default {};
