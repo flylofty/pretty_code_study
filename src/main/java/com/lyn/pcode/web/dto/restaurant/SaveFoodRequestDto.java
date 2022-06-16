@@ -11,6 +11,5 @@ import java.util.List;
 @NoArgsConstructor(force = true)
 @RequiredArgsConstructor
 public class SaveFoodRequestDto {
-    @Valid
-    private final List<SaveFoodDto> foods;
+    private final List<@Valid SaveFoodDto> foods;
 }

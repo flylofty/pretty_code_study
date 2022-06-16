@@ -2,13 +2,14 @@ package com.lyn.pcode.web.restaurant;
 
 import com.lyn.pcode.service.RestaurantService;
 import com.lyn.pcode.web.dto.restaurant.*;
+import com.lyn.pcode.web.dto.restaurant.validation.ValidationSequence;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -32,12 +33,8 @@ public class RestaurantControllerV1 {
     }
 
     @PostMapping("/api/v1/restaurants/{restaurantId}/foods")
-    public void saveFood(@RequestBody @Valid SaveFoodRequestDto requestDto) {
-        List<SaveFoodDto> foods = requestDto.getFoods();
-        for (SaveFoodDto food : foods) {
-            System.out.println(food.getName());
-            System.out.println(food.getPrice());
-            System.out.println("======================");
-        }
+    public void saveFood(@RequestBody @Validated(ValidationSequence.class) SaveFoodRequestDto requestDto,
+                         @PathVariable Long restaurantId)
+    {
     }
 }
