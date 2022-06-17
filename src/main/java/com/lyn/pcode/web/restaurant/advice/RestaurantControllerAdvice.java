@@ -18,12 +18,12 @@ public class RestaurantControllerAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public SaveRestaurantResponseDto MethodArgumentNotValid(MethodArgumentNotValidException e) {
-        return new SaveRestaurantResponseDto(makeData(e.getBindingResult()));
+        return new SaveRestaurantResponseDto(getErrorData(e.getBindingResult()));
     }
 
-    private Map<String, String> makeData(BindingResult bindingResult) {
+    private Map<String, String> getErrorData(BindingResult bindingResult) {
 
-        Map<String, String>  data = new HashMap<>();
+        Map<String, String> data = new HashMap<>();
 
         bindingResult.getAllErrors()
                 .forEach(objectError -> {
@@ -37,6 +37,7 @@ public class RestaurantControllerAdvice {
     }
 
     private boolean isNeededFieldName(String fieldName) {
-        return fieldName.equals("name") || fieldName.equals("minOrderPrice") || fieldName.equals("deliveryFee");
+        return fieldName.equals("name") || fieldName.equals("minOrderPrice")
+                || fieldName.equals("deliveryFee") || fieldName.equals("price");
     }
 }
