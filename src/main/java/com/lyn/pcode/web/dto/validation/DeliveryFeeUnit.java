@@ -1,4 +1,4 @@
-package com.lyn.pcode.web.dto.restaurant.validation;
+package com.lyn.pcode.web.dto.validation;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;

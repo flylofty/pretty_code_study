@@ -1,6 +1,7 @@
-package com.lyn.pcode.web.dto.restaurant;
+package com.lyn.pcode.web.dto.food;
 
-import com.lyn.pcode.web.dto.restaurant.validation.OrderPriceUnit;
+import com.lyn.pcode.models.food.Food;
+import com.lyn.pcode.web.dto.validation.OrderPriceUnit;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -9,7 +10,7 @@ import org.hibernate.validator.constraints.Range;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-import static com.lyn.pcode.web.dto.restaurant.validation.ValidationGroups.*;
+import static com.lyn.pcode.web.dto.validation.ValidationGroups.*;
 
 @Getter
 @NoArgsConstructor(force = true)
@@ -24,4 +25,12 @@ public class SaveFoodDto {
     @Range(min = 100, max = 1000000, message = "가격은 100 ~ 1,000,000 범위의 값만 유효합니다", groups = RangeGroup.class)
     @OrderPriceUnit(message = "price:가격은 100원 단위로만 입력가능합니다", groups = UnitGroup.class)
     private final Integer price;
+
+    public Food toEntity(Long restaurantId) {
+        return Food.builder()
+                .name(name)
+                .restaurantId(restaurantId)
+                .price(String.valueOf(price))
+                .build();
+    }
 }

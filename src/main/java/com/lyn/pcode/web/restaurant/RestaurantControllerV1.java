@@ -1,8 +1,11 @@
 package com.lyn.pcode.web.restaurant;
 
+import com.lyn.pcode.service.FoodService;
 import com.lyn.pcode.service.RestaurantService;
+import com.lyn.pcode.web.dto.food.SaveFoodRequestDto;
+import com.lyn.pcode.web.dto.food.SaveFoodResponseDto;
 import com.lyn.pcode.web.dto.restaurant.*;
-import com.lyn.pcode.web.dto.restaurant.validation.ValidationSequence;
+import com.lyn.pcode.web.dto.validation.ValidationSequence;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +20,7 @@ import javax.validation.Valid;
 public class RestaurantControllerV1 {
 
     private final RestaurantService restaurantService;
+    private final FoodService foodService;
 
     @PostMapping("/api/v1/restaurants")
     public ResponseEntity<SaveRestaurantResponseDto> save(@RequestBody @Valid SaveRestaurantRequestDto requestDto) {
@@ -33,8 +37,13 @@ public class RestaurantControllerV1 {
     }
 
     @PostMapping("/api/v1/restaurants/{restaurantId}/foods")
-    public void saveFood(@RequestBody @Validated(ValidationSequence.class) SaveFoodRequestDto requestDto,
-                         @PathVariable Long restaurantId)
+    public ResponseEntity<SaveFoodResponseDto> saveFoods(@RequestBody @Validated(ValidationSequence.class) SaveFoodRequestDto requestDto,
+                                                         @PathVariable Long restaurantId) throws Exception
     {
+        foodService.saveFoods(requestDto, restaurantId);
+
+        return ResponseEntity
+                .ok()
+                .body(new SaveFoodResponseDto());
     }
 }
