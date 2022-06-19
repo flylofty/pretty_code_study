@@ -1,11 +1,11 @@
-package com.lyn.pcode.web.dto.restaurant.validation;
+package com.lyn.pcode.web.dto.validation;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-public class OrderPriceUnitValidator implements ConstraintValidator<OrderPriceUnit, Integer> {
+public class DeliveryFeeUnitValidator implements ConstraintValidator<DeliveryFeeUnit, Integer> {
     @Override
     public boolean isValid(Integer value, ConstraintValidatorContext context) {
-        return value % 100 == 0;
+        return value % 500 == 0;
     }
 }

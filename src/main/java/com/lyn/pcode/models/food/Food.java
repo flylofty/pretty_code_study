@@ -1,4 +1,4 @@
-package com.lyn.pcode.models.restaurant;
+package com.lyn.pcode.models.food;
 
 import com.lyn.pcode.models.Timestamped;
 import lombok.Builder;
@@ -12,16 +12,14 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class Food extends Timestamped {
 
-    // Food Entity 실질적인 id
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    // 레스토랑 아이디, 외래키 지정하면 좋을 것 같다
     @Column(name = "restaurant_id", nullable = false)
     private Long restaurantId;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
 
     @Column(nullable = false)
