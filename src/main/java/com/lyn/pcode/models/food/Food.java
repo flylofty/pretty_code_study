@@ -19,7 +19,7 @@ public class Food extends Timestamped {
     @Column(name = "restaurant_id", nullable = false)
     private Long restaurantId;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String name;
 
     @Column(nullable = false)
