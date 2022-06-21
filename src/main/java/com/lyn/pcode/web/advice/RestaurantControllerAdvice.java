@@ -1,7 +1,8 @@
-package com.lyn.pcode.web.restaurant.advice;
+package com.lyn.pcode.web.advice;
 
 import com.lyn.pcode.exception.FoodNameExistException;
 import com.lyn.pcode.web.dto.food.SaveFoodResponseDto;
+import com.lyn.pcode.web.order.OrderControllerV1;
 import com.lyn.pcode.web.restaurant.RestaurantControllerV1;
 import com.lyn.pcode.web.dto.restaurant.SaveRestaurantResponseDto;
 import org.springframework.http.HttpStatus;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.HashMap;
 import java.util.Map;
 
-@RestControllerAdvice(assignableTypes = RestaurantControllerV1.class)
+@RestControllerAdvice(assignableTypes = {RestaurantControllerV1.class, OrderControllerV1.class})
 public class RestaurantControllerAdvice {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -46,6 +47,7 @@ public class RestaurantControllerAdvice {
 
     private boolean isNeededFieldName(String fieldName) {
         return fieldName.equals("name") || fieldName.equals("minOrderPrice")
-                || fieldName.equals("deliveryFee") || fieldName.equals("price");
+                || fieldName.equals("deliveryFee") || fieldName.equals("price")
+                || fieldName.equals("quantity");
     }
 }
