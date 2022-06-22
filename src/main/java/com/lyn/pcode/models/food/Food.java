@@ -13,7 +13,7 @@ import javax.persistence.*;
 public class Food extends Timestamped {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "restaurant_id", nullable = false)

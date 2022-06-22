@@ -1,10 +1,12 @@
 package com.lyn.pcode.web.dto.order;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.hibernate.validator.constraints.Range;
 
 @Getter
-public class FoodOrderDto {
+@RequiredArgsConstructor
+public class FoodOrderInfoDto {
 
     private Long id;
 

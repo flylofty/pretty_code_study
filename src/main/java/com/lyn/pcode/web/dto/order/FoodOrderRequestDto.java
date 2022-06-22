@@ -6,7 +6,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @Getter
-public class SaveOrderDto {
+public class FoodOrderRequestDto {
     private Long restaurantId;
-    private List<@Valid FoodOrderDto> foods;
+    private List<@Valid FoodOrderInfoDto> foods;
 }
