@@ -1,6 +1,7 @@
 package com.lyn.pcode.web.dto.food;
 
 import com.lyn.pcode.models.food.Food;
+import com.lyn.pcode.models.restaurant.Restaurant;
 import com.lyn.pcode.web.dto.validation.OrderPriceUnit;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,10 +27,10 @@ public class SaveFoodDto {
     @OrderPriceUnit(message = "price:가격은 100원 단위로만 입력가능합니다", groups = UnitGroup.class)
     private final Integer price;
 
-    public Food toEntity(Long restaurantId) {
+    public Food toEntity(Restaurant restaurant) {
         return Food.builder()
                 .name(name)
-                .restaurantId(restaurantId)
+                .restaurant(restaurant)
                 .price(String.valueOf(price))
                 .build();
     }

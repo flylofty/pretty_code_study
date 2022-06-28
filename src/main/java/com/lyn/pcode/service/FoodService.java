@@ -2,6 +2,9 @@ package com.lyn.pcode.service;
 
 import com.lyn.pcode.exception.FoodNameExistException;
 import com.lyn.pcode.models.food.FoodRepository;
+import com.lyn.pcode.models.restaurant.Restaurant;
+import com.lyn.pcode.models.restaurant.RestaurantRepository;
+import com.lyn.pcode.web.dto.food.FoodsDto;
 import com.lyn.pcode.web.dto.food.SaveFoodDto;
 import com.lyn.pcode.web.dto.food.SaveFoodRequestDto;
 import lombok.RequiredArgsConstructor;
@@ -15,10 +18,16 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class FoodService {
 
+    private final RestaurantRepository restaurantRepository;
     private final FoodRepository foodRepository;
 
     @Transactional
     public void saveFoods(SaveFoodRequestDto requestDto, Long restaurantId) throws Exception {
+
+        Restaurant findRestaurant = restaurantRepository.findById(restaurantId).orElseThrow(
+                // 임시
+                () -> new IllegalArgumentException("restaurant:존재하지 않는 음식점입니다")
+        );
 
         /**
          * 요청하는 이름마다 각각 DB에 존재 여부를 묻는 쿼리를 실행하는 것이 맞는지
@@ -32,7 +41,7 @@ public class FoodService {
             }
         }
 
-        foodRepository.saveAll(requestDto.toEntities(restaurantId));
+        foodRepository.saveAll(requestDto.toEntities(findRestaurant));
     }
 
     private boolean isFoodNameExist(Long restaurantId, String foodName) {

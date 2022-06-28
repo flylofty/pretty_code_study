@@ -13,9 +13,9 @@ public class RestaurantsResponseDto {
     private String message;
     private List<RestaurantDto> data;
 
-    public RestaurantsResponseDto(String code, String message, List<RestaurantDto> data) {
-        this.code = code;
-        this.message = message;
+    public RestaurantsResponseDto(List<RestaurantDto> data) {
+        this.code = "200";
+        this.message = "요청 성공";
         this.data = data;
     }
 }
