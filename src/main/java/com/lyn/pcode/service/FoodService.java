@@ -4,7 +4,6 @@ import com.lyn.pcode.exception.FoodNameExistException;
 import com.lyn.pcode.models.food.FoodRepository;
 import com.lyn.pcode.models.restaurant.Restaurant;
 import com.lyn.pcode.models.restaurant.RestaurantRepository;
-import com.lyn.pcode.web.dto.food.FoodsDto;
 import com.lyn.pcode.web.dto.food.SaveFoodDto;
 import com.lyn.pcode.web.dto.food.SaveFoodRequestDto;
 import lombok.RequiredArgsConstructor;
