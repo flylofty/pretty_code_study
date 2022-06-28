@@ -45,7 +45,7 @@ public class OrderService {
             Food findFood = foodRepository.findById(food.getId()).orElseThrow(
                     () -> new NullPointerException("해당 음식이 존재하지 않습니다.")
             );
-            orderList.add(new Order(uuid, findFood, food.getQuantity()));
+//            orderList.add(new Order(uuid, findFood, food.getQuantity()));
             searchResultList.add(new FoodOrderSearchResultDto(findFood, food));
         }
 

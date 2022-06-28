@@ -1,6 +1,7 @@
 package com.lyn.pcode.web.dto.food;
 
 import com.lyn.pcode.models.food.Food;
+import com.lyn.pcode.models.restaurant.Restaurant;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -15,11 +16,11 @@ import java.util.List;
 public class SaveFoodRequestDto {
     private final List<@Valid SaveFoodDto> foods;
 
-    public List<Food> toEntities(Long restaurantId) {
+    public List<Food> toEntities(Restaurant restaurant) {
         List<Food> result = new ArrayList<>();
 
         for (SaveFoodDto food : foods) {
-            result.add(food.toEntity(restaurantId));
+            result.add(food.toEntity(restaurant));
         }
 
         return result;

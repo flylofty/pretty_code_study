@@ -19,7 +19,7 @@ public class RestaurantService {
     private final RestaurantRepository restaurantRepository;
 
     @Transactional
-    public SaveRestaurantResponseDto save(SaveRestaurantRequestDto requestDto) {
+    public SaveRestaurantResponseDto saveRestaurant(SaveRestaurantRequestDto requestDto) {
         return new SaveRestaurantResponseDto(restaurantRepository.save(requestDto.toEntity()));
     }
 

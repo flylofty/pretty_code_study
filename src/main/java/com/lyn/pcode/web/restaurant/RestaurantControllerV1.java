@@ -24,17 +24,17 @@ public class RestaurantControllerV1 {
     private final FoodService foodService;
 
     @PostMapping("/api/v1/restaurants")
-    public ResponseEntity<SaveRestaurantResponseDto> save(@RequestBody @Valid SaveRestaurantRequestDto requestDto) {
+    public ResponseEntity<SaveRestaurantResponseDto> saveRestaurant(@RequestBody @Valid SaveRestaurantRequestDto requestDto) {
         return ResponseEntity
                 .ok()
-                .body(restaurantService.save(requestDto));
+                .body(restaurantService.saveRestaurant(requestDto));
     }
 
     @GetMapping("/api/v1/restaurants")
     public ResponseEntity<RestaurantsResponseDto> getRestaurants() {
         return ResponseEntity
                 .ok()
-                .body(new RestaurantsResponseDto("200", "요청 성공", restaurantService.getRestaurants()));
+                .body(new RestaurantsResponseDto(restaurantService.getRestaurants()));
     }
 
     @PostMapping("/api/v1/restaurants/{restaurantId}/foods")

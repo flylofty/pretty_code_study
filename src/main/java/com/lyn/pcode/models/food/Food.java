@@ -27,6 +27,13 @@ public class Food extends Timestamped {
     @Column(nullable = false, name = "FOOD_PRICE")
     private String price;
 
+    @Builder
+    public Food(Restaurant restaurant, String name, String price) {
+        this.restaurant = restaurant;
+        this.name = name;
+        this.price = price;
+    }
+
 //    @Builder
 //    public Food(Long restaurantId, String name, String price) {
 //        this.restaurantId = restaurantId;
