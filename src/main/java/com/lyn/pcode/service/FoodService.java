@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -47,11 +46,5 @@ public class FoodService {
 
     private boolean isFoodNameExist(Long restaurantId, String foodName) {
         return foodRepository.existsByRestaurantIdAndName(restaurantId, foodName);
-    }
-
-    public List<FoodsDto> getFoods(Long restaurantId) {
-        return foodRepository.findAllByRestaurantId(restaurantId).stream()
-                .map(FoodsDto::new)
-                .collect(Collectors.toList());
     }
 }
