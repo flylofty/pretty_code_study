@@ -12,18 +12,13 @@ public class OrderDataDto {
     private Integer deliveryFee;
     private Integer totalPrice;
 
-    public OrderDataDto(Restaurant restaurant, List<FoodOrderSearchResultDto> searchResultList) {
+    public OrderDataDto(Restaurant restaurant,
+                        List<FoodOrderSearchResultDto> searchResultList,
+                        Integer totalPrice)
+    {
         this.restaurantName = restaurant.getName();
-        foods = searchResultList;
+        this.foods = searchResultList;
         this.deliveryFee = restaurant.getDeliveryFee();
-        totalPrice = calculateTotalPrice();
-    }
-
-    private Integer calculateTotalPrice() {
-        int total = 0;
-        for (FoodOrderSearchResultDto food : foods) {
-            total += food.getPrice();
-        }
-        return total;
+        this.totalPrice = totalPrice + this.deliveryFee;
     }
 }

@@ -17,7 +17,7 @@ public class Food extends Timestamped {
     @Column(name = "FOOD_ID")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "RESTAURANT_ID")
     private Restaurant restaurant;
 
