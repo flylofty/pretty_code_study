@@ -1,17 +1,16 @@
 package com.lyn.pcode.web.dto.order;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
-public class FoodOrderResponseDto {
+@NoArgsConstructor // 클래스명 변경 FoodOrderResponseDto -> OrderFoodResponseDto
+public class OrderFoodResponseDto {
     private String code;
     private String message;
-    private OrderDataDto data;
+    private OrderFoodResponseData data;
 
-    public FoodOrderResponseDto(OrderDataDto data) {
+    public OrderFoodResponseDto(OrderFoodResponseData data) {
         this.code = "200";
         this.message = "요청 성공";
         this.data = data;

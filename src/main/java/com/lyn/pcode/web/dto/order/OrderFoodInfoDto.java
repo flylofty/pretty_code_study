@@ -5,8 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.hibernate.validator.constraints.Range;
 
 @Getter
-@RequiredArgsConstructor
-public class FoodOrderInfoDto {
+@RequiredArgsConstructor // 클래스명 변경 FoodOrderInfoDto -> OrderFoodInfoDto
+public class OrderFoodInfoDto {
 
     private Long id;
 
