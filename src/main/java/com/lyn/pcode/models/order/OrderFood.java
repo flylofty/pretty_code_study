@@ -1,7 +1,7 @@
 package com.lyn.pcode.models.order;
 
 import com.lyn.pcode.models.food.Food;
-import com.lyn.pcode.web.dto.order.FoodOrderInfoDto;
+import com.lyn.pcode.web.dto.order.OrderFoodInfoDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -20,16 +20,24 @@ public class OrderFood {
     @JoinColumn(name = "ORDER_ID")
     private Order order;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "FOOD_ID")
     private Food food;
 
     @Column(name = "ORDER_FOOD_QUANTITY", nullable = false)
     private Integer quantity;
 
-    public OrderFood(Order order, Food food, FoodOrderInfoDto dto) {
+    public OrderFood(Order order, Food food, OrderFoodInfoDto dto) {
         this.order = order;
         this.food = food;
         this.quantity = dto.getQuantity();
+    }
+
+    public String getFoodName() {
+        return food.getName();
+    }
+
+    public Integer getTotalFoodPrice() {
+        return Integer.parseInt(food.getPrice()) * this.quantity;
     }
 }

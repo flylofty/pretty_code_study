@@ -8,17 +8,15 @@ import com.lyn.pcode.models.order.OrderFoodRepository;
 import com.lyn.pcode.models.order.OrderRepository;
 import com.lyn.pcode.models.restaurant.Restaurant;
 import com.lyn.pcode.models.restaurant.RestaurantRepository;
-import com.lyn.pcode.web.dto.order.FoodOrderInfoDto;
-import com.lyn.pcode.web.dto.order.FoodOrderRequestDto;
-import com.lyn.pcode.web.dto.order.FoodOrderSearchResultDto;
-import com.lyn.pcode.web.dto.order.OrderDataDto;
+import com.lyn.pcode.web.dto.order.OrderFoodInfoDto;
+import com.lyn.pcode.web.dto.order.OrderFoodRequestDto;
+import com.lyn.pcode.web.dto.order.OrderFoodResponseData;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -28,39 +26,51 @@ public class OrderService {
     private final RestaurantRepository restaurantRepository;
     private final FoodRepository foodRepository;
     private final OrderRepository orderRepository;
-
     private final OrderFoodRepository orderFoodRepository;
 
-    @Transactional
-    public OrderDataDto foodOrder(FoodOrderRequestDto requestDto) {
-
-        // restaurantId를 통해 해당 식당의 정보를 찾아옴
-        // 음식점 이름, 배달비 정보가 필요
-        Restaurant restaurant = restaurantRepository.findById(requestDto.getRestaurantId()).orElseThrow(
-                () -> new NullPointerException("존재하지 않는 음식점입니다")
-        );
-
+    @Transactional // 메서드명 변경 foodOrder -> saveOrderFood
+    public OrderFoodResponseData saveOrder(OrderFoodRequestDto requestDto) throws Exception {
+        // 음식점 조회
+        Restaurant restaurant = getRestaurant(requestDto.getRestaurantId());
         // 주문 저장
-        Order savedOrder = orderRepository.save(new Order(restaurant));
+        Order savedOrder = saveOrder(restaurant);
+        // 주문_음식 저장
+        List<OrderFood> savedOrderFoodList = saveOrderFood(requestDto, savedOrder);
+        // 응답 데이터 리턴
+        return new OrderFoodResponseData(restaurant, savedOrderFoodList);
+    }
 
-        // 주문_음식 저장, 리팩토링 어떻게 하실?
-        List<FoodOrderInfoDto> foodOrderInfoList = requestDto.getFoods();
+    private List<OrderFood> saveOrderFood(OrderFoodRequestDto requestDto, Order savedOrder) throws Exception {
+        // '주문_음식' 정보를 저장할 리스트
         List<OrderFood> orderFoodList = new ArrayList<>();
-        Integer totalPrice = 0;
-        List<FoodOrderSearchResultDto> foodResultList = new ArrayList<>();
 
-        for (FoodOrderInfoDto foodOrderInfo : foodOrderInfoList) {
-            Food food = foodRepository.findById(foodOrderInfo.getId()).orElseThrow(
-                    () -> new NullPointerException("존재하지 않는 음식입니다")
-            );
-
-            orderFoodList.add(new OrderFood(savedOrder, food, foodOrderInfo));
-            foodResultList.add(new FoodOrderSearchResultDto(food, foodOrderInfo));
-            totalPrice += foodResultList.get(foodResultList.size() - 1).getPrice();
+        // 사용자 요청 정보를 dto로부터 가져옴
+        List<OrderFoodInfoDto> orderFoodInfoList = requestDto.getOrderFoodInfoList();
+        for (OrderFoodInfoDto orderFoodInfo : orderFoodInfoList) {
+            // 특정 음식 정보 조회
+            Food food = getFood(orderFoodInfo);
+            // '주문_음식' 저장 정보 리스트 축적
+            orderFoodList.add(new OrderFood(savedOrder, food, orderFoodInfo));
         }
 
-        orderFoodRepository.saveAll(orderFoodList);
+        // '주문_음식' 정보 저장
+        return orderFoodRepository.saveAll(orderFoodList);
+    }
 
-        return new OrderDataDto(restaurant, foodResultList, totalPrice);
+    private Order saveOrder(Restaurant restaurant) {
+        return orderRepository.save(new Order(restaurant));
+    }
+
+    private Restaurant getRestaurant(Long restaurantId) throws Exception {
+        return restaurantRepository.findById(restaurantId).orElseThrow(
+                // 사용자 정의 Exception 구현해야 할 것 같음, ExceptionHandler 미구현
+                () -> new NullPointerException("존재하지 않는 음식점입니다")
+        );
+    }
+
+    private Food getFood(OrderFoodInfoDto foodOrderInfo) throws Exception {
+        return foodRepository.findById(foodOrderInfo.getId()).orElseThrow(
+                () -> new NullPointerException("존재하지 않는 음식입니다")
+        );
     }
 }
