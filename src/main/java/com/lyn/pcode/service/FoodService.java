@@ -4,6 +4,7 @@ import com.lyn.pcode.exception.FoodNameExistException;
 import com.lyn.pcode.models.food.FoodRepository;
 import com.lyn.pcode.models.restaurant.Restaurant;
 import com.lyn.pcode.models.restaurant.RestaurantRepository;
+import com.lyn.pcode.web.dto.food.FoodsDto;
 import com.lyn.pcode.web.dto.food.SaveFoodDto;
 import com.lyn.pcode.web.dto.food.SaveFoodRequestDto;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -45,5 +48,20 @@ public class FoodService {
 
     private boolean isFoodNameExist(Long restaurantId, String foodName) {
         return foodRepository.existsByRestaurantIdAndName(restaurantId, foodName);
+    }
+
+    public List<FoodsDto> getFoods(Long restaurantId) {
+
+        Restaurant restaurant = getRestaurant(restaurantId);
+
+        return restaurant.getMenu().stream()
+                .map(FoodsDto::new)
+                .collect(Collectors.toList());
+    }
+
+    private Restaurant getRestaurant(Long restaurantId) {
+        return restaurantRepository.findById(restaurantId).orElseThrow(
+                () -> new NoSuchElementException("해당 음식점이 존재하지 않습니다.")
+        );
     }
 }
