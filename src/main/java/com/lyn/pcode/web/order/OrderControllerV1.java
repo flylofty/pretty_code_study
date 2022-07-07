@@ -3,9 +3,11 @@ package com.lyn.pcode.web.order;
 import com.lyn.pcode.service.OrderService;
 import com.lyn.pcode.web.dto.order.OrderFoodRequestDto;
 import com.lyn.pcode.web.dto.order.OrderFoodResponseDto;
+import com.lyn.pcode.web.dto.order.OrdersResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,5 +28,12 @@ public class OrderControllerV1 {
         return ResponseEntity
                 .ok()
                 .body(new OrderFoodResponseDto(orderService.saveOrder(requestDto)));
+    }
+
+    @GetMapping("/api/v1/orders")
+    public ResponseEntity<OrdersResponseDto> getOrders() {
+        return ResponseEntity
+                .ok()
+                .body(new OrdersResponseDto(orderService.getOrders()));
     }
 }

@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -38,6 +39,12 @@ public class OrderService {
         List<OrderFood> savedOrderFoodList = saveOrderFood(requestDto, savedOrder);
         // 응답 데이터 리턴
         return new OrderFoodResponseData(restaurant, savedOrderFoodList);
+    }
+
+    public List<OrderFoodResponseData> getOrders() {
+        return orderRepository.findAll().stream()
+                .map(OrderFoodResponseData::new)
+                .collect(Collectors.toList());
     }
 
     private List<OrderFood> saveOrderFood(OrderFoodRequestDto requestDto, Order savedOrder) throws Exception {
