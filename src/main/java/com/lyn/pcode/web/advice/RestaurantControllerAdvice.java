@@ -1,6 +1,6 @@
 package com.lyn.pcode.web.advice;
 
-import com.lyn.pcode.exception.FoodExistException;
+import com.lyn.pcode.exception.FoodAlreadyExistException;
 import com.lyn.pcode.exception.GlobalExistException;
 import com.lyn.pcode.web.dto.food.GeneralResponseDto;
 import com.lyn.pcode.web.dto.food.SaveFoodErrorResponseDto;
@@ -27,8 +27,8 @@ public class RestaurantControllerAdvice {
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(FoodExistException.class)
-    public SaveFoodErrorResponseDto handleFoodExistenceException(FoodExistException e) {
+    @ExceptionHandler(FoodAlreadyExistException.class)
+    public SaveFoodErrorResponseDto handleFoodExistenceException(FoodAlreadyExistException e) {
         return new SaveFoodErrorResponseDto(e);
     }
 

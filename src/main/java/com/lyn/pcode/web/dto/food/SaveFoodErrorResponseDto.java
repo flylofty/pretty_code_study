@@ -1,6 +1,6 @@
 package com.lyn.pcode.web.dto.food;
 
-import com.lyn.pcode.exception.FoodExistException;
+import com.lyn.pcode.exception.FoodAlreadyExistException;
 import lombok.Getter;
 
 import java.util.HashMap;
@@ -13,7 +13,7 @@ public class SaveFoodErrorResponseDto {
     private String message;
     private Map<String, String> data;
 
-    public SaveFoodErrorResponseDto(FoodExistException e) {
+    public SaveFoodErrorResponseDto(FoodAlreadyExistException e) {
         this.code = "400";
         this.message = "사용자 입력 오류";
         data = new HashMap<>();
