@@ -1,5 +1,6 @@
 package com.lyn.pcode.service;
 
+import com.lyn.pcode.exception.GlobalExistException;
 import com.lyn.pcode.models.food.Food;
 import com.lyn.pcode.models.food.FoodRepository;
 import com.lyn.pcode.models.order.Order;
@@ -70,14 +71,13 @@ public class OrderService {
 
     private Restaurant getRestaurant(Long restaurantId) throws Exception {
         return restaurantRepository.findById(restaurantId).orElseThrow(
-                // 사용자 정의 Exception 구현해야 할 것 같음, ExceptionHandler 미구현
-                () -> new NullPointerException("존재하지 않는 음식점입니다")
+                () -> new GlobalExistException("존재하지 않는 음식점입니다")
         );
     }
 
     private Food getFood(OrderFoodInfoDto foodOrderInfo) throws Exception {
         return foodRepository.findById(foodOrderInfo.getId()).orElseThrow(
-                () -> new NullPointerException("존재하지 않는 음식입니다")
+                () -> new GlobalExistException("존재하지 않는 음식입니다")
         );
     }
 }
