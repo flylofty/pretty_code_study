@@ -1,6 +1,5 @@
 package com.lyn.pcode.web.dto.restaurant;
 
-import com.lyn.pcode.exception.FoodNameExistException;
 import com.lyn.pcode.models.restaurant.Restaurant;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

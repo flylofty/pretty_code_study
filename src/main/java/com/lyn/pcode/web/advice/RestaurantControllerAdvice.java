@@ -1,7 +1,9 @@
 package com.lyn.pcode.web.advice;
 
-import com.lyn.pcode.exception.FoodNameExistException;
-import com.lyn.pcode.web.dto.food.SaveFoodResponseDto;
+import com.lyn.pcode.exception.FoodAlreadyExistException;
+import com.lyn.pcode.exception.GlobalExistException;
+import com.lyn.pcode.web.dto.food.GeneralResponseDto;
+import com.lyn.pcode.web.dto.food.SaveFoodErrorResponseDto;
 import com.lyn.pcode.web.order.OrderControllerV1;
 import com.lyn.pcode.web.restaurant.RestaurantControllerV1;
 import com.lyn.pcode.web.dto.restaurant.SaveRestaurantResponseDto;
@@ -19,14 +21,20 @@ import java.util.Map;
 public class RestaurantControllerAdvice {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(FoodNameExistException.class)
-    public SaveFoodResponseDto FoodNameBindException(FoodNameExistException e) {
-        return new SaveFoodResponseDto(e);
+    @ExceptionHandler(GlobalExistException.class)
+    public GeneralResponseDto handleGlobalExistException(GlobalExistException e) {
+        return new GeneralResponseDto(e);
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(FoodAlreadyExistException.class)
+    public SaveFoodErrorResponseDto handleFoodExistenceException(FoodAlreadyExistException e) {
+        return new SaveFoodErrorResponseDto(e);
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public SaveRestaurantResponseDto MethodArgumentNotValid(MethodArgumentNotValidException e) {
+    public SaveRestaurantResponseDto handleMethodArgumentNotValidation(MethodArgumentNotValidException e) {
         return new SaveRestaurantResponseDto(getErrorData(e.getBindingResult()));
     }
 
