@@ -24,7 +24,7 @@ public class RestaurantControllerV1 {
     private final FoodService foodService;
 
     @PostMapping("/api/v1/restaurants")
-    public ResponseEntity<SaveRestaurantResponseDto> saveRestaurant(@RequestBody @Valid SaveRestaurantRequestDto requestDto) {
+    public ResponseEntity<RestaurantSaveResponseDto> saveRestaurant(@RequestBody @Valid RestaurantSaveRequestDto requestDto) {
         return ResponseEntity
                 .ok()
                 .body(restaurantService.saveRestaurant(requestDto));

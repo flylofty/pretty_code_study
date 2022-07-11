@@ -2,8 +2,8 @@ package com.lyn.pcode.service;
 
 import com.lyn.pcode.models.restaurant.RestaurantRepository;
 import com.lyn.pcode.web.dto.restaurant.RestaurantDto;
-import com.lyn.pcode.web.dto.restaurant.SaveRestaurantRequestDto;
-import com.lyn.pcode.web.dto.restaurant.SaveRestaurantResponseDto;
+import com.lyn.pcode.web.dto.restaurant.RestaurantSaveRequestDto;
+import com.lyn.pcode.web.dto.restaurant.RestaurantSaveResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,8 +19,8 @@ public class RestaurantService {
     private final RestaurantRepository restaurantRepository;
 
     @Transactional
-    public SaveRestaurantResponseDto saveRestaurant(SaveRestaurantRequestDto requestDto) {
-        return new SaveRestaurantResponseDto(restaurantRepository.save(requestDto.toEntity()));
+    public RestaurantSaveResponseDto saveRestaurant(RestaurantSaveRequestDto requestDto) {
+        return new RestaurantSaveResponseDto(restaurantRepository.save(requestDto.toEntity()));
     }
 
     public List<RestaurantDto> getRestaurants() {

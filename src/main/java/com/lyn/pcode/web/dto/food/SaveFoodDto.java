@@ -18,13 +18,13 @@ import static com.lyn.pcode.web.dto.validation.ValidationGroups.*;
 @RequiredArgsConstructor
 public class SaveFoodDto {
 
-    @NotNull(message = "name:음식명은 필수 입력 항목입니다", groups = NotNullGroup.class)
-    @NotBlank(message = "name:음식명은 필수 입력 항목입니다", groups = NotBlankGroup.class)
+    @NotNull(message = "음식명은 필수 입력 항목입니다", groups = NotNullGroup.class)
+    @NotBlank(message = "음식명은 필수 입력 항목입니다", groups = NotBlankGroup.class)
     private final String name;
 
-    @NotNull(message = "price:음식 가격은 필수 입력 합목입니다", groups = RangeGroup.class)
+    @NotNull(message = "음식 가격은 필수 입력 합목입니다", groups = RangeGroup.class)
     @Range(min = 100, max = 1000000, message = "가격은 100 ~ 1,000,000 범위의 값만 유효합니다", groups = RangeGroup.class)
-    @OrderPriceUnit(message = "price:가격은 100원 단위로만 입력가능합니다", groups = UnitGroup.class)
+    @OrderPriceUnit(message = "가격은 100원 단위로만 입력가능합니다", groups = UnitGroup.class)
     private final Integer price;
 
     public Food toEntity(Restaurant restaurant) {

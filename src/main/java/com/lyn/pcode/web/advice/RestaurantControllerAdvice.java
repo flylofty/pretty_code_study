@@ -6,15 +6,17 @@ import com.lyn.pcode.web.dto.food.GeneralResponseDto;
 import com.lyn.pcode.web.dto.food.SaveFoodErrorResponseDto;
 import com.lyn.pcode.web.order.OrderControllerV1;
 import com.lyn.pcode.web.restaurant.RestaurantControllerV1;
-import com.lyn.pcode.web.dto.restaurant.SaveRestaurantResponseDto;
+import com.lyn.pcode.web.dto.restaurant.RestaurantSaveResponseDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestControllerAdvice(assignableTypes = {RestaurantControllerV1.class, OrderControllerV1.class})
@@ -34,28 +36,26 @@ public class RestaurantControllerAdvice {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public SaveRestaurantResponseDto handleMethodArgumentNotValidation(MethodArgumentNotValidException e) {
-        return new SaveRestaurantResponseDto(getErrorData(e.getBindingResult()));
+    public RestaurantSaveResponseDto handleMethodArgumentNotValidation(MethodArgumentNotValidException e) {
+        return new RestaurantSaveResponseDto(getErrorData(e.getBindingResult()));
     }
 
     private Map<String, String> getErrorData(BindingResult bindingResult) {
+        List<FieldError> fieldErrors = bindingResult.getFieldErrors();
 
-        Map<String, String> data = new HashMap<>();
+        Map<String, String> validation = new HashMap<>();
+        for (FieldError fieldError : fieldErrors) {
+            validation.put(getCorrectFieldName(fieldError.getField()), fieldError.getDefaultMessage());
+        }
 
-        bindingResult.getAllErrors()
-                .forEach(objectError -> {
-                    String[] errorArray = objectError.getDefaultMessage().split(":");
-                    if (isNeededFieldName(errorArray[0])) {
-                        data.put(errorArray[0], errorArray[1]);
-                    }
-                });
-
-        return data;
+        return validation;
     }
 
-    private boolean isNeededFieldName(String fieldName) {
-        return fieldName.equals("name") || fieldName.equals("minOrderPrice")
-                || fieldName.equals("deliveryFee") || fieldName.equals("price")
-                || fieldName.equals("quantity");
+    private String getCorrectFieldName(String field) {
+        if (field.contains(".")) {
+            String[] strings = field.split("\\.");
+            return strings[1];
+        }
+        return field;
     }
 }

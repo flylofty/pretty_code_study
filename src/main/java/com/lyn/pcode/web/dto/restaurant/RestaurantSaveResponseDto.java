@@ -11,18 +11,18 @@ import java.util.Map;
 @Slf4j
 @Getter
 @NoArgsConstructor
-public class SaveRestaurantResponseDto {
+public class RestaurantSaveResponseDto {
 
     private String code;
     private String message;
     private Map<String, String> data;
 
-    public SaveRestaurantResponseDto(Map<String, String> data) {
+    public RestaurantSaveResponseDto(Map<String, String> data) {
         requestFieldSet("400", "사용자 입력 오류");
         this.data = data;
     }
 
-    public SaveRestaurantResponseDto(Restaurant entity) {
+    public RestaurantSaveResponseDto(Restaurant entity) {
         requestFieldSet("200", "성공");
         data = new HashMap<>();
         data.put("id", entity.getId().toString());
