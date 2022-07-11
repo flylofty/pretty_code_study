@@ -14,21 +14,21 @@ import javax.validation.constraints.NotNull;
 @Getter
 @NoArgsConstructor(force = true)
 @RequiredArgsConstructor
-public class SaveRestaurantRequestDto {
+public class RestaurantSaveRequestDto {
 
-    @NotBlank(message = "name:음식점 이름은 필수 항목입니다.")
+    @NotBlank(message = "음식점 이름은 필수 항목입니다.")
     private final String name;
 
-    @NotNull(message = "minOrderPrice:최소 주문 가격은 필수 항목입니다.")
+    @NotNull(message = "최소 주문 가격은 필수 항목입니다.")
     @Range(min = 1000, max = 100000,
-           message = "minOrderPrice:최소 주문 가격은 천원 이상 십만원 이하의 값이여야 합니다.")
-    @OrderPriceUnit(message = "minOrderPrice:최소 주문 가격은 100원 단위로만 입력가능합니다.")
+           message = "최소 주문 가격은 천원 이상 십만원 이하의 값이여야 합니다.")
+    @OrderPriceUnit(message = "최소 주문 가격은 100원 단위로만 입력가능합니다.")
     private final Integer minOrderPrice;
 
-    @NotNull(message = "deliveryFee:배달 요금은 필수 항목입니다.")
+    @NotNull(message = "배달 요금은 필수 항목입니다.")
     @Range(min = 0, max = 10000,
-           message = "deliveryFee:배달 요금은 0원 이상 만원 이하의 값이여야 합니다.")
-    @DeliveryFeeUnit(message = "deliveryFee:배달 요금은 500원 단위로만 입력가능합니다.")
+           message = "배달 요금은 0원 이상 만원 이하의 값이여야 합니다.")
+    @DeliveryFeeUnit(message = "배달 요금은 500원 단위로만 입력가능합니다.")
     private final Integer deliveryFee;
 
     public Restaurant toEntity() {
