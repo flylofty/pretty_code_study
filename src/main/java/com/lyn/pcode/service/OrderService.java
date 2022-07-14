@@ -53,8 +53,8 @@ public class OrderService {
         List<OrderFood> orderFoodList = new ArrayList<>();
 
         // 사용자 요청 정보를 dto로부터 가져옴
-        List<OrderFoodInfoDto> orderFoodInfoList = requestDto.getOrderFoodInfoList();
-        for (OrderFoodInfoDto orderFoodInfo : orderFoodInfoList) {
+        List<OrderFoodInfoDto> requestOrderFoodList = requestDto.getFoods();
+        for (OrderFoodInfoDto orderFoodInfo : requestOrderFoodList) {
             // 특정 음식 정보 조회
             Food food = getFood(orderFoodInfo);
             // '주문_음식' 저장 정보 리스트 축적
