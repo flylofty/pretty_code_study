@@ -10,7 +10,6 @@ import com.lyn.pcode.models.restaurant.Restaurant;
 import com.lyn.pcode.models.restaurant.RestaurantRepository;
 import com.lyn.pcode.web.dto.order.OrderFoodInfoDto;
 import com.lyn.pcode.web.dto.order.OrderFoodRequestDto;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,7 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +35,9 @@ class OrderControllerV1Test {
 
     @Autowired
     MockMvc mockMvc;
+
+    @Autowired
+    EntityManager em;
 
     @Autowired
     RestaurantRepository restaurantRepository;
@@ -52,9 +56,9 @@ class OrderControllerV1Test {
     }
 
     @Test
+    @Transactional
     @DisplayName("주문_음식_요청_테스트")
     void saveOrder() throws Exception {
-
         // given
         Restaurant savedRestaurant = restaurantRepository.save(new Restaurant("쉐이크쉑 청담점", 5000, 2000));
         foodRepository.save(new Food(savedRestaurant, "쉐이크쉑 버거", "10900"));
@@ -82,15 +86,20 @@ class OrderControllerV1Test {
                 .andExpect(status().isOk())
                 .andDo(print());
 
+        em.flush();
+        em.clear();
+
         // then
-        assertEquals(1L, orderRepository.count());
+        //assertEquals(1L, orderRepository.count());
         Order order = orderRepository.findAll().get(0);
+        int totalPrice = 0;
 
         List<OrderFood> orderFoodList = order.getOrderFoods();
-        Integer totalPrice = 0;
         for (OrderFood orderFood : orderFoodList) {
-            totalPrice += orderFood.getTotalFoodPrice();
+            Food food = orderFood.getFood();
+            totalPrice += ( Integer.parseInt(food.getPrice()) * orderFood.getQuantity() );
         }
-        assertEquals(totalPrice, 40400);
+
+        assertEquals(totalPrice + order.getRestaurant().getDeliveryFee(), 40400);
     }
 }
