@@ -3,9 +3,9 @@ package com.lyn.pcode.web.dto.restaurant;
 import com.lyn.pcode.models.restaurant.Restaurant;
 import com.lyn.pcode.web.dto.validation.DeliveryFeeUnit;
 import com.lyn.pcode.web.dto.validation.OrderPriceUnit;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.NotBlank;
@@ -13,7 +13,6 @@ import javax.validation.constraints.NotNull;
 
 @Getter
 @NoArgsConstructor(force = true)
-@RequiredArgsConstructor
 public class RestaurantSaveRequestDto {
 
     @NotBlank(message = "음식점 이름은 필수 항목입니다.")
@@ -30,6 +29,13 @@ public class RestaurantSaveRequestDto {
            message = "배달 요금은 0원 이상 만원 이하의 값이여야 합니다.")
     @DeliveryFeeUnit(message = "배달 요금은 500원 단위로만 입력가능합니다.")
     private final Integer deliveryFee;
+
+    @Builder
+    public RestaurantSaveRequestDto(String name, Integer minOrderPrice, Integer deliveryFee) {
+        this.name = name;
+        this.minOrderPrice = minOrderPrice;
+        this.deliveryFee = deliveryFee;
+    }
 
     public Restaurant toEntity() {
         return Restaurant.builder()
