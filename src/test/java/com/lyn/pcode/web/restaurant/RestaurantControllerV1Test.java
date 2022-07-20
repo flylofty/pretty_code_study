@@ -84,14 +84,16 @@ class RestaurantControllerV1Test {
                 .deliveryFee(2000)
                 .build();
 
-        restaurantRepository.save(restaurant);
+        restaurant = restaurantRepository.save(restaurant);
+
+        final Long restaurantId = restaurant.getId();
 
         // expected
         mockMvc.perform(get("/api/v1/restaurants")
                         .contentType(APPLICATION_JSON)
                 )
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data[0].id").value(1L))
+                .andExpect(jsonPath("$.data[0].id").value(restaurantId))
                 .andExpect(jsonPath("$.data[0].name").value("쉐이크쉑 청담점"))
                 .andExpect(jsonPath("$.data[0].minOrderPrice").value(5000))
                 .andExpect(jsonPath("$.data[0].deliveryFee").value(2000))
@@ -110,9 +112,10 @@ class RestaurantControllerV1Test {
                 .deliveryFee(2000)
                 .build();
 
-        final Long restaurantId = 1L;
+        restaurant = restaurantRepository.save(restaurant);
 
-        restaurantRepository.save(restaurant);
+        final Long restaurantId = restaurant.getId();
+
 
         List<SaveFoodDto> foods = new ArrayList<>();
         foods.add(new SaveFoodDto("쉑버거 더블", 10900));
