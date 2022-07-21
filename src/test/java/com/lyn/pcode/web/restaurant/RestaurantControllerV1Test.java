@@ -49,7 +49,7 @@ class RestaurantControllerV1Test {
     }
 
     @Test
-    @DisplayName("POST 요청 시 식당 기본 정보가 DB에 저장된다.")
+    @DisplayName("식당 기본 정보 등록")
     void saveRestaurant() throws Exception {
 
         //given
@@ -75,7 +75,7 @@ class RestaurantControllerV1Test {
     }
 
     @Test
-    @DisplayName("GET 음식점 하나 조회")
+    @DisplayName("음식점 하나 조회")
     void getRestaurantInfo() throws Exception {
         // given
         Restaurant restaurant = Restaurant.builder()
@@ -102,7 +102,7 @@ class RestaurantControllerV1Test {
 
     @Test
     @Transactional
-    @DisplayName("POST 특정 음식점 메뉴 등록")
+    @DisplayName("특정 음식점 메뉴 등록")
     void saveFoods() throws Exception {
 
         // given
