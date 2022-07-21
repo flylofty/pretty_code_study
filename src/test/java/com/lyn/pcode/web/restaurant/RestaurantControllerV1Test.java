@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lyn.pcode.models.food.Food;
 import com.lyn.pcode.models.restaurant.Restaurant;
 import com.lyn.pcode.models.restaurant.RestaurantRepository;
+import com.lyn.pcode.service.FoodService;
 import com.lyn.pcode.web.dto.food.SaveFoodDto;
 import com.lyn.pcode.web.dto.food.SaveFoodRequestDto;
 import com.lyn.pcode.web.dto.restaurant.RestaurantSaveRequestDto;
@@ -24,8 +25,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.http.MediaType.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @AutoConfigureMockMvc
 @SpringBootTest
@@ -43,6 +43,9 @@ class RestaurantControllerV1Test {
     @Autowired
     private RestaurantRepository restaurantRepository;
 
+    @Autowired
+    private FoodService foodService;
+
     @BeforeEach
     void clear() {
         restaurantRepository.deleteAll();
@@ -59,9 +62,9 @@ class RestaurantControllerV1Test {
 
         //when
         mockMvc.perform(post("/api/v1/restaurants")
-                        .contentType(APPLICATION_JSON)
+                                .contentType(APPLICATION_JSON)
 //                        .content("{\"name\":\"쉐이크쉑 청담점\", \"minOrderPrice\":\"5000\", \"deliveryFee\":\"2000\"}")
-                        .content(json)
+                                .content(json)
                 )
                 .andExpect(status().isOk())
                 .andDo(print());
@@ -116,7 +119,6 @@ class RestaurantControllerV1Test {
 
         final Long restaurantId = restaurant.getId();
 
-
         List<SaveFoodDto> foods = new ArrayList<>();
         foods.add(new SaveFoodDto("쉑버거 더블", 10900));
         foods.add(new SaveFoodDto("치즈 감자튀김", 4900));
@@ -148,15 +150,46 @@ class RestaurantControllerV1Test {
             assertEquals(Integer.parseInt(food.getPrice()), foods.get(i).getPrice());
         }
     }
+
+    @Test
+    @DisplayName("특정 음식점 메뉴 조회")
+    void getMenuTest() throws Exception {
+
+        // given
+        Restaurant restaurant = Restaurant.builder()
+                .name("쉐이크쉑 청담점")
+                .minOrderPrice(5000)
+                .deliveryFee(2000)
+                .build();
+
+        restaurant = restaurantRepository.save(restaurant);
+
+        final Long restaurantId = restaurant.getId();
+
+        List<SaveFoodDto> foods = new ArrayList<>();
+        foods.add(new SaveFoodDto("쉑버거 더블", 10900));
+        foods.add(new SaveFoodDto("치즈 감자튀김", 4900));
+        foods.add(new SaveFoodDto("쉐이크", 5900));
+        SaveFoodRequestDto request = new SaveFoodRequestDto(foods);
+
+        foodService.saveFoods(request, restaurantId);
+
+        // expected
+        mockMvc.perform(get("/api/v1/restaurants/{restaurantId}/foods", restaurantId))
+                .andExpect(status().isOk())
+                .andExpect(header().string("content-type", "application/json"))
+                .andExpect(jsonPath("$.data[0].id").value(1))
+                .andExpect(jsonPath("$.data[0].name").value("쉑버거 더블"))
+                .andExpect(jsonPath("$.data[0].price").value("10900"))
+                .andExpect(jsonPath("$.data[1].id").value(2))
+                .andExpect(jsonPath("$.data[1].name").value("치즈 감자튀김"))
+                .andExpect(jsonPath("$.data[1].price").value("4900"))
+                .andExpect(jsonPath("$.data[2].id").value(3))
+                .andExpect(jsonPath("$.data[2].name").value("쉐이크"))
+                .andExpect(jsonPath("$.data[2].price").value("5900"))
+                .andDo(print());
+    }
 }
-
-
-
-
-
-
-
-
 
 
 
