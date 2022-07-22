@@ -21,7 +21,7 @@ public class Food extends Timestamped {
     @JoinColumn(name = "RESTAURANT_ID")
     private Restaurant restaurant;
 
-    @Column(nullable = false, name = "FOOD_NAME")
+    @Column(nullable = false, name = "FOOD_NAME", unique = true)
     private String name;
 
     @Column(nullable = false, name = "FOOD_PRICE")
