@@ -2,6 +2,7 @@ package com.lyn.pcode.web.restaurant;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lyn.pcode.models.food.Food;
+import com.lyn.pcode.models.food.FoodRepository;
 import com.lyn.pcode.models.restaurant.Restaurant;
 import com.lyn.pcode.models.restaurant.RestaurantRepository;
 import com.lyn.pcode.service.FoodService;
@@ -46,9 +47,13 @@ class RestaurantControllerV1Test {
     @Autowired
     private FoodService foodService;
 
+    @Autowired
+    private FoodRepository foodRepository;
+
     @BeforeEach
     void clear() {
         restaurantRepository.deleteAll();
+        foodRepository.deleteAll();
     }
 
     @Test
@@ -177,13 +182,10 @@ class RestaurantControllerV1Test {
         mockMvc.perform(get("/api/v1/restaurants/{restaurantId}/foods", restaurantId))
                 .andExpect(status().isOk())
                 .andExpect(header().string("content-type", "application/json"))
-                .andExpect(jsonPath("$.data[0].id").value(1))
                 .andExpect(jsonPath("$.data[0].name").value("쉑버거 더블"))
                 .andExpect(jsonPath("$.data[0].price").value("10900"))
-                .andExpect(jsonPath("$.data[1].id").value(2))
                 .andExpect(jsonPath("$.data[1].name").value("치즈 감자튀김"))
                 .andExpect(jsonPath("$.data[1].price").value("4900"))
-                .andExpect(jsonPath("$.data[2].id").value(3))
                 .andExpect(jsonPath("$.data[2].name").value("쉐이크"))
                 .andExpect(jsonPath("$.data[2].price").value("5900"))
                 .andDo(print());

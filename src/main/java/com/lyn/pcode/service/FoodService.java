@@ -32,7 +32,7 @@ public class FoodService {
          * 요청하는 이름마다 각각 DB에 존재 여부를 묻는 쿼리를 실행하는 것이 맞는지
          * 아니면 해당 restaurantId 식당의 음식 리스트를 가져와서 존재를 판단하는 것이 좋은지 모르겠음
          */
-        validateFoodExistence(requestDto, restaurantId);
+//        validateFoodExistence(requestDto, restaurantId);
         foodRepository.saveAll(requestDto.toEntities(findRestaurant));
     }
 
@@ -43,7 +43,7 @@ public class FoodService {
                 .collect(Collectors.toList());
     }
 
-    private void validateFoodExistence(SaveFoodRequestDto requestDto, Long restaurantId) throws Exception {
+    private void validateFoodExistence(SaveFoodRequestDto requestDto, Long restaurantId) {
         List<SaveFoodDto> foodList = requestDto.getFoods();
         for (SaveFoodDto food : foodList) {
             if (isFoodExist(restaurantId, food.getName())) {
