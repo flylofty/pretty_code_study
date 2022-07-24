@@ -63,7 +63,6 @@ class RestaurantControllerV1Test {
         //when
         mockMvc.perform(post("/api/v1/restaurants")
                                 .contentType(APPLICATION_JSON)
-//                        .content("{\"name\":\"쉐이크쉑 청담점\", \"minOrderPrice\":\"5000\", \"deliveryFee\":\"2000\"}")
                                 .content(json)
                 )
                 .andExpect(status().isOk())
