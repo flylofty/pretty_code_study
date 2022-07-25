@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -47,16 +48,8 @@ class RestaurantControllerV1Test {
     @Autowired
     private FoodService foodService;
 
-    @Autowired
-    private FoodRepository foodRepository;
-
-    @BeforeEach
-    void clear() {
-        restaurantRepository.deleteAll();
-        foodRepository.deleteAll();
-    }
-
     @Test
+    @Transactional
     @DisplayName("식당 기본 정보 등록")
     void saveRestaurant() throws Exception {
 
@@ -82,6 +75,7 @@ class RestaurantControllerV1Test {
     }
 
     @Test
+    @Transactional
     @DisplayName("음식점 하나 조회")
     void getRestaurantInfo() throws Exception {
         // given
@@ -156,6 +150,7 @@ class RestaurantControllerV1Test {
     }
 
     @Test
+    @Transactional
     @DisplayName("특정 음식점 메뉴 조회")
     void getMenuTest() throws Exception {
 
@@ -178,8 +173,11 @@ class RestaurantControllerV1Test {
 
         foodService.saveFoods(request, restaurantId);
 
+        em.flush();
+        em.clear();
+
         // expected
-        mockMvc.perform(get("/api/v1/restaurants/{restaurantId}/foods", restaurantId))
+        MvcResult mvcResult = mockMvc.perform(get("/api/v1/restaurants/{restaurantId}/foods", restaurantId))
                 .andExpect(status().isOk())
                 .andExpect(header().string("content-type", "application/json"))
                 .andExpect(jsonPath("$.data[0].name").value("쉑버거 더블"))
@@ -188,7 +186,8 @@ class RestaurantControllerV1Test {
                 .andExpect(jsonPath("$.data[1].price").value("4900"))
                 .andExpect(jsonPath("$.data[2].name").value("쉐이크"))
                 .andExpect(jsonPath("$.data[2].price").value("5900"))
-                .andDo(print());
+                .andDo(print())
+                .andReturn();
     }
 }
 

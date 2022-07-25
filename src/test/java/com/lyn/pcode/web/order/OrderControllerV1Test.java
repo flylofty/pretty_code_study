@@ -48,13 +48,6 @@ class OrderControllerV1Test {
     @Autowired
     OrderRepository orderRepository;
 
-    @BeforeEach
-    void clear() {
-        restaurantRepository.deleteAll();
-        foodRepository.deleteAll();
-        orderRepository.deleteAll();
-    }
-
     @Test
     @Transactional
     @DisplayName("주문_음식_요청_테스트")
@@ -66,40 +59,39 @@ class OrderControllerV1Test {
         foodRepository.save(new Food(savedRestaurant, "쉐이크", "5900"));
 
         List<OrderFoodInfoDto> foods = new ArrayList<>();
-        foods.add(new OrderFoodInfoDto(1L, 1));
-        foods.add(new OrderFoodInfoDto(2L, 2));
-        foods.add(new OrderFoodInfoDto(3L, 3));
+
+        List<Food> menu = foodRepository.findAll();
+        int quantityCount = 1;
+        for (Food food : menu) {
+            foods.add(new OrderFoodInfoDto(food.getId(), quantityCount++));
+        }
 
         OrderFoodRequestDto request = OrderFoodRequestDto.builder()
-                .restaurantId(1L)
+                .restaurantId(savedRestaurant.getId())
                 .foods(foods)
                 .build();
 
         ObjectMapper objectMapper = new ObjectMapper();
         String json = objectMapper.writeValueAsString(request);
 
-        // when
+        // expected
         mockMvc.perform(post("/api/v1/orders")
                         .contentType(APPLICATION_JSON)
                         .content(json)
                 )
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.restaurantName").value("쉐이크쉑 청담점"))
+                .andExpect(jsonPath("$.data.deliveryFee").value(2000))
+                .andExpect(jsonPath("$.data.totalPrice").value(40400))
+                .andExpect(jsonPath("$.data.foods[0].name").value("쉐이크쉑 버거"))
+                .andExpect(jsonPath("$.data.foods[0].quantity").value("1"))
+                .andExpect(jsonPath("$.data.foods[0].price").value(10900))
+                .andExpect(jsonPath("$.data.foods[1].name").value("치즈 감자튀김"))
+                .andExpect(jsonPath("$.data.foods[1].quantity").value("2"))
+                .andExpect(jsonPath("$.data.foods[1].price").value(9800))
+                .andExpect(jsonPath("$.data.foods[2].name").value("쉐이크"))
+                .andExpect(jsonPath("$.data.foods[2].quantity").value("3"))
+                .andExpect(jsonPath("$.data.foods[2].price").value(17700))
                 .andDo(print());
-
-        em.flush();
-        em.clear();
-
-        // then
-        //assertEquals(1L, orderRepository.count());
-        Order order = orderRepository.findAll().get(0);
-        int totalPrice = 0;
-
-        List<OrderFood> orderFoodList = order.getOrderFoods();
-        for (OrderFood orderFood : orderFoodList) {
-            Food food = orderFood.getFood();
-            totalPrice += ( Integer.parseInt(food.getPrice()) * orderFood.getQuantity() );
-        }
-
-        assertEquals(totalPrice + order.getRestaurant().getDeliveryFee(), 40400);
     }
 }

@@ -10,6 +10,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.springframework.http.MediaType.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -26,6 +27,7 @@ public class ValidationTest {
     private ObjectMapper objectMapper;
 
     @Test
+    @Transactional
     @DisplayName("음식점 등록 이름 누락되었을 경우, BAD_REQUEST(400)를 전달한다")
     void testMissingRestaurantName() throws Exception {
         // given
@@ -42,6 +44,7 @@ public class ValidationTest {
     }
 
     @Test
+    @Transactional
     @DisplayName("음식점 등록 최소 주문 가격 범위 밖의 값일 경우, BAD_REQUEST(400)를 전달한다")
     void testMissingRestaurantMinOrderPrice1() throws Exception {
         // given
@@ -59,6 +62,7 @@ public class ValidationTest {
     }
 
     @Test
+    @Transactional
     @DisplayName("음식점 등록 최소 주문 가격 100원 단위 아닐 경우, BAD_REQUEST(400)를 전달한다")
     void testMissingRestaurantMinOrderPrice2() throws Exception {
         // given
@@ -76,6 +80,7 @@ public class ValidationTest {
     }
 
     @Test
+    @Transactional
     @DisplayName("음식점 등록 배달비 허용값 아닐 경우, BAD_REQUEST(400)를 전달한다")
     void testMissingRestaurantDeliveryFee1() throws Exception {
         // given
@@ -93,6 +98,7 @@ public class ValidationTest {
     }
 
     @Test
+    @Transactional
     @DisplayName("음식점 등록 배달비 500원 단위 아닐 경우, BAD_REQUEST(400)를 전달한다")
     void testMissingRestaurantDeliveryFee2() throws Exception {
         // given
