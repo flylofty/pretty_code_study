@@ -90,4 +90,39 @@ class OrderControllerV1Test {
                 .andExpect(jsonPath("$.data.foods[2].price").value(17700))
                 .andDo(print());
     }
+
+    @Test
+    @Transactional
+    @DisplayName("주문_음식_요청_존재하지_않는_음식점")
+    void saveOrderErrorTest() throws Exception {
+        // given
+        Restaurant savedRestaurant = restaurantRepository.save(new Restaurant("쉐이크쉑 청담점", 5000, 2000));
+        foodRepository.save(new Food(savedRestaurant, "쉐이크쉑 버거", "10900"));
+        foodRepository.save(new Food(savedRestaurant, "치즈 감자튀김", "4900"));
+        foodRepository.save(new Food(savedRestaurant, "쉐이크", "5900"));
+
+        List<OrderFoodInfoDto> foods = new ArrayList<>();
+        List<Food> menu = foodRepository.findAll();
+        int quantityCount = 1;
+        for (Food food : menu) {
+            foods.add(new OrderFoodInfoDto(food.getId(), quantityCount++));
+        }
+
+        OrderFoodRequestDto request = OrderFoodRequestDto.builder()
+                .restaurantId(2L)
+                .foods(foods)
+                .build();
+        ObjectMapper objectMapper = new ObjectMapper();
+        String json = objectMapper.writeValueAsString(request);
+
+        // expected
+        mockMvc.perform(post("/api/v1/orders")
+                        .contentType(APPLICATION_JSON)
+                        .content(json)
+                )
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value("400"))
+                .andExpect(jsonPath("$.message").value("존재하지 않는 음식점입니다"))
+                .andDo(print());
+    }
 }
