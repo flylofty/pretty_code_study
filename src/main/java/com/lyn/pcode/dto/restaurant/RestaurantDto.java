@@ -1,4 +1,4 @@
-package com.lyn.pcode.web.dto.restaurant;
+package com.lyn.pcode.dto.restaurant;
 
 import com.lyn.pcode.models.restaurant.Restaurant;
 import lombok.Getter;

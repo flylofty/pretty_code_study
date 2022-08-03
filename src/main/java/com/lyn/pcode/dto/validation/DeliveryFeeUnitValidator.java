@@ -1,4 +1,4 @@
-package com.lyn.pcode.web.dto.validation;
+package com.lyn.pcode.dto.validation;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;

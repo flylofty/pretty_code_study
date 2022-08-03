@@ -1,9 +1,9 @@
 package com.lyn.pcode.service;
 
 import com.lyn.pcode.models.restaurant.RestaurantRepository;
-import com.lyn.pcode.web.dto.restaurant.RestaurantDto;
-import com.lyn.pcode.web.dto.restaurant.RestaurantSaveRequestDto;
-import com.lyn.pcode.web.dto.restaurant.RestaurantSaveResponseDto;
+import com.lyn.pcode.dto.restaurant.RestaurantDto;
+import com.lyn.pcode.dto.restaurant.RestaurantSaveRequestDto;
+import com.lyn.pcode.dto.restaurant.RestaurantSaveResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

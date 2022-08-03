@@ -1,12 +1,14 @@
 package com.lyn.pcode.web.restaurant;
 
+import com.lyn.pcode.dto.restaurant.RestaurantSaveRequestDto;
+import com.lyn.pcode.dto.restaurant.RestaurantSaveResponseDto;
+import com.lyn.pcode.dto.restaurant.RestaurantsResponseDto;
 import com.lyn.pcode.service.FoodService;
 import com.lyn.pcode.service.RestaurantService;
-import com.lyn.pcode.web.dto.food.FoodsResponseDto;
-import com.lyn.pcode.web.dto.food.SaveFoodRequestDto;
-import com.lyn.pcode.web.dto.food.GeneralResponseDto;
-import com.lyn.pcode.web.dto.restaurant.*;
-import com.lyn.pcode.web.dto.validation.ValidationSequence;
+import com.lyn.pcode.dto.food.FoodsResponseDto;
+import com.lyn.pcode.dto.food.SaveFoodRequestDto;
+import com.lyn.pcode.dto.food.GeneralResponseDto;
+import com.lyn.pcode.dto.validation.ValidationSequence;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;

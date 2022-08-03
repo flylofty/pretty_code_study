@@ -2,14 +2,12 @@ package com.lyn.pcode.web.restaurant;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lyn.pcode.models.food.Food;
-import com.lyn.pcode.models.food.FoodRepository;
 import com.lyn.pcode.models.restaurant.Restaurant;
 import com.lyn.pcode.models.restaurant.RestaurantRepository;
 import com.lyn.pcode.service.FoodService;
-import com.lyn.pcode.web.dto.food.SaveFoodDto;
-import com.lyn.pcode.web.dto.food.SaveFoodRequestDto;
-import com.lyn.pcode.web.dto.restaurant.RestaurantSaveRequestDto;
-import org.junit.jupiter.api.BeforeEach;
+import com.lyn.pcode.dto.food.SaveFoodDto;
+import com.lyn.pcode.dto.food.SaveFoodRequestDto;
+import com.lyn.pcode.dto.restaurant.RestaurantSaveRequestDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

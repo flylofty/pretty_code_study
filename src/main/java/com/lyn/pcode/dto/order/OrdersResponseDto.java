@@ -1,4 +1,4 @@
-package com.lyn.pcode.web.dto.order;
+package com.lyn.pcode.dto.order;
 
 import lombok.Getter;
 

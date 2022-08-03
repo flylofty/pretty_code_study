@@ -1,4 +1,4 @@
-package com.lyn.pcode.web.dto.order;
+package com.lyn.pcode.dto.order;
 
 import com.lyn.pcode.models.food.Food;
 import com.lyn.pcode.models.order.OrderFood;

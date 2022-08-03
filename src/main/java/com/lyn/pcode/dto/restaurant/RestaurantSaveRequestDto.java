@@ -1,8 +1,8 @@
-package com.lyn.pcode.web.dto.restaurant;
+package com.lyn.pcode.dto.restaurant;
 
+import com.lyn.pcode.dto.validation.DeliveryFeeUnit;
+import com.lyn.pcode.dto.validation.OrderPriceUnit;
 import com.lyn.pcode.models.restaurant.Restaurant;
-import com.lyn.pcode.web.dto.validation.DeliveryFeeUnit;
-import com.lyn.pcode.web.dto.validation.OrderPriceUnit;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -2,11 +2,11 @@ package com.lyn.pcode.web.advice;
 
 import com.lyn.pcode.exception.FoodAlreadyExistException;
 import com.lyn.pcode.exception.GlobalExistException;
-import com.lyn.pcode.web.dto.food.GeneralResponseDto;
-import com.lyn.pcode.web.dto.food.SaveFoodErrorResponseDto;
+import com.lyn.pcode.dto.food.GeneralResponseDto;
+import com.lyn.pcode.dto.food.SaveFoodErrorResponseDto;
 import com.lyn.pcode.web.order.OrderControllerV1;
 import com.lyn.pcode.web.restaurant.RestaurantControllerV1;
-import com.lyn.pcode.web.dto.restaurant.RestaurantSaveResponseDto;
+import com.lyn.pcode.dto.restaurant.RestaurantSaveResponseDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;

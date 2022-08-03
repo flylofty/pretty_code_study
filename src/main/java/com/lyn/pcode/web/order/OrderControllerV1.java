@@ -1,9 +1,9 @@
 package com.lyn.pcode.web.order;
 
 import com.lyn.pcode.service.OrderService;
-import com.lyn.pcode.web.dto.order.OrderFoodRequestDto;
-import com.lyn.pcode.web.dto.order.OrderFoodResponseDto;
-import com.lyn.pcode.web.dto.order.OrdersResponseDto;
+import com.lyn.pcode.dto.order.OrderFoodRequestDto;
+import com.lyn.pcode.dto.order.OrderFoodResponseDto;
+import com.lyn.pcode.dto.order.OrdersResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;

@@ -1,4 +1,4 @@
-package com.lyn.pcode.web.dto.food;
+package com.lyn.pcode.dto.food;
 
 import com.lyn.pcode.exception.GlobalExistException;
 import lombok.Getter;

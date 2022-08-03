@@ -1,7 +1,7 @@
 package com.lyn.pcode.models.order;
 
 import com.lyn.pcode.models.food.Food;
-import com.lyn.pcode.web.dto.order.OrderFoodInfoDto;
+import com.lyn.pcode.dto.order.OrderFoodInfoDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

@@ -2,7 +2,7 @@ package com.lyn.pcode.web.restaurant;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lyn.pcode.web.dto.restaurant.RestaurantSaveRequestDto;
+import com.lyn.pcode.dto.restaurant.RestaurantSaveRequestDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

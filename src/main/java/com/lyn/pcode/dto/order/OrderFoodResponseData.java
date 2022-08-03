@@ -1,4 +1,4 @@
-package com.lyn.pcode.web.dto.order;
+package com.lyn.pcode.dto.order;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.lyn.pcode.models.order.Order;

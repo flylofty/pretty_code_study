@@ -1,4 +1,4 @@
-package com.lyn.pcode.web.dto.food;
+package com.lyn.pcode.dto.restaurant;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -7,12 +7,13 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor
-public class FoodsResponseDto {
+public class RestaurantsResponseDto {
+
     private String code;
     private String message;
-    private List<FoodsDto> data;
+    private List<RestaurantDto> data;
 
-    public FoodsResponseDto(List<FoodsDto> data) {
+    public RestaurantsResponseDto(List<RestaurantDto> data) {
         this.code = "200";
         this.message = "요청 성공";
         this.data = data;
