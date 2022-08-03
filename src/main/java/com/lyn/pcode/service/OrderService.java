@@ -31,7 +31,7 @@ public class OrderService {
     private final OrderFoodRepository orderFoodRepository;
 
     @Transactional // 메서드명 변경 foodOrder -> saveOrderFood
-    public OrderFoodResponseData saveOrder(OrderFoodRequestDto requestDto) throws Exception {
+    public OrderFoodResponseData saveOrder(OrderFoodRequestDto requestDto) {
         // 음식점 조회
         Restaurant restaurant = getRestaurant(requestDto.getRestaurantId());
         // 주문 저장
@@ -48,7 +48,7 @@ public class OrderService {
                 .collect(Collectors.toList());
     }
 
-    private List<OrderFood> saveOrderFood(OrderFoodRequestDto requestDto, Order savedOrder) throws Exception {
+    private List<OrderFood> saveOrderFood(OrderFoodRequestDto requestDto, Order savedOrder) {
         // '주문_음식' 정보를 저장할 리스트
         List<OrderFood> orderFoodList = new ArrayList<>();
 
@@ -69,13 +69,13 @@ public class OrderService {
         return orderRepository.save(new Order(restaurant));
     }
 
-    private Restaurant getRestaurant(Long restaurantId) throws Exception {
+    private Restaurant getRestaurant(Long restaurantId) {
         return restaurantRepository.findById(restaurantId).orElseThrow(
                 () -> new GlobalExistException("존재하지 않는 음식점입니다")
         );
     }
 
-    private Food getFood(OrderFoodInfoDto foodOrderInfo) throws Exception {
+    private Food getFood(OrderFoodInfoDto foodOrderInfo) {
         return foodRepository.findById(foodOrderInfo.getId()).orElseThrow(
                 () -> new GlobalExistException("존재하지 않는 음식입니다")
         );
