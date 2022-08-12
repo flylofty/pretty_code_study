@@ -14,8 +14,8 @@ public class GeneralResponseDto {
         this.message = "요청 성공";
     }
 
-    public GeneralResponseDto(GlobalExistException e) {
+    public GeneralResponseDto(String message) {
         this.code = "400";
-        this.message = e.getMessage();
+        this.message = message;
     }
 }

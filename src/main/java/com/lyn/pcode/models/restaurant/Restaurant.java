@@ -22,7 +22,7 @@ public class Restaurant extends Timestamped {
     @Column(name = "RESTAURANT_ID")
     private Long id;
 
-    @Column(nullable = false, name = "RESTAURANT_NAME")
+    @Column(nullable = false, name = "RESTAURANT_NAME", unique = true)
     private String name;
 
     @Column(nullable = false, name = "RESTAURANT_MIN_ORDER_PRICE")
