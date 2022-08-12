@@ -2,12 +2,14 @@ package com.lyn.pcode.web.restaurant;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lyn.pcode.models.food.Food;
+import com.lyn.pcode.models.food.FoodRepository;
 import com.lyn.pcode.models.restaurant.Restaurant;
 import com.lyn.pcode.models.restaurant.RestaurantRepository;
 import com.lyn.pcode.service.FoodService;
 import com.lyn.pcode.dto.food.SaveFoodDto;
 import com.lyn.pcode.dto.food.SaveFoodRequestDto;
 import com.lyn.pcode.dto.restaurant.RestaurantSaveRequestDto;
+import com.lyn.pcode.service.RestaurantService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @AutoConfigureMockMvc
 @SpringBootTest
+@Transactional
 class RestaurantControllerV1Test {
 
     @Autowired
@@ -46,8 +49,13 @@ class RestaurantControllerV1Test {
     @Autowired
     private FoodService foodService;
 
+    @Autowired
+    private RestaurantService restaurantService;
+
+    @Autowired
+    private FoodRepository foodRepository;
+
     @Test
-    @Transactional
     @DisplayName("식당 기본 정보 등록")
     void saveRestaurant() throws Exception {
 
@@ -73,7 +81,6 @@ class RestaurantControllerV1Test {
     }
 
     @Test
-    @Transactional
     @DisplayName("음식점 하나 조회")
     void getRestaurantInfo() throws Exception {
         // given
@@ -100,7 +107,6 @@ class RestaurantControllerV1Test {
     }
 
     @Test
-    @Transactional
     @DisplayName("특정 음식점 메뉴 등록")
     void saveFoods() throws Exception {
 
@@ -148,7 +154,6 @@ class RestaurantControllerV1Test {
     }
 
     @Test
-    @Transactional
     @DisplayName("특정 음식점 메뉴 조회")
     void getMenuTest() throws Exception {
 
@@ -186,6 +191,64 @@ class RestaurantControllerV1Test {
                 .andExpect(jsonPath("$.data[2].price").value("5900"))
                 .andDo(print())
                 .andReturn();
+    }
+
+    @Test
+    @DisplayName("음식점 이름 중복 불가")
+    void duplicateDisallowedRestaurantNameTest() {
+        RestaurantSaveRequestDto request = new RestaurantSaveRequestDto("쉐이크쉑 청담점", 5000, 2000);
+        restaurantRepository.save(request.toEntity());
+        assertThrows(RuntimeException.class, () -> {
+            RestaurantSaveRequestDto request2 = new RestaurantSaveRequestDto("쉐이크쉑 청담점", 4000, 2500);
+            restaurantRepository.save(request2.toEntity());
+        });
+    }
+
+    @Test
+    @DisplayName("음식점 이름 중복 불가 응답")
+    void duplicateDisallowedRestaurantNameResponseTest() throws Exception {
+        //given
+        RestaurantSaveRequestDto request = new RestaurantSaveRequestDto("쉐이크쉑 청담점", 5000, 2000);
+        restaurantService.saveRestaurant(request);
+
+        RestaurantSaveRequestDto clientRequest = new RestaurantSaveRequestDto("쉐이크쉑 청담점", 5000, 2000);
+        objectMapper = new ObjectMapper();
+        String json = objectMapper.writeValueAsString(clientRequest);
+
+        //when
+        mockMvc.perform(post("/api/v1/restaurants")
+                        .contentType(APPLICATION_JSON)
+                        .content(json)
+                )
+                .andExpect(status().isBadRequest())
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("음식점 메뉴 중복 불가 응답")
+    void duplicateDisallowedFoodNameResponseTest() throws Exception {
+        // given
+        Restaurant restaurant = Restaurant.builder()
+                .name("쉐이크쉑 청담점")
+                .minOrderPrice(5000)
+                .deliveryFee(2000)
+                .build();
+        restaurant = restaurantRepository.save(restaurant);
+        final Long restaurantId = restaurant.getId();
+        List<SaveFoodDto> foods = new ArrayList<>();
+        foods.add(new SaveFoodDto("쉑버거 더블", 10900));
+        foods.add(new SaveFoodDto("치즈 감자튀김", 4900));
+        foods.add(new SaveFoodDto("쉐이크", 5900));
+        SaveFoodRequestDto request = new SaveFoodRequestDto(foods);
+        foodService.saveFoods(request, restaurantId);
+        String json = objectMapper.writeValueAsString(request);
+
+        // when
+        mockMvc.perform(post("/api/v1/restaurants/{restaurantId}/foods", restaurantId)
+                        .contentType(APPLICATION_JSON)
+                        .content(json))
+                .andExpect(status().isBadRequest())
+                .andDo(print());
     }
 }
 
